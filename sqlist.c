@@ -101,4 +101,29 @@ Status PreElem(const SqList L,ElemType cur_e,ElemType *pre_e)
 		return ERROR;
 }
 
+Status NextElem(const SqList L,ElemType cur_e,ElemType *next_e)
+{
+	int i;
+	for(i = 0;i < L.length;i++)
+	{
+		if(cur_e == L.elem[i])
+		{
+			if(i != 0)
+				*next_e = L.elem[i+1];
+			else
+				return ERROR;
+		}
+	}
+	if(i >= L.length)
+		return ERROR;
+}
 
+Status InsertElem(SqList *L, int i, ElemType e)
+{
+	ElemType *new;
+	if(i < 1 || i L->length + 1)
+		return ERROR;
+	if(L->length >= L->size)
+	{
+		new =
+}
