@@ -41,7 +41,7 @@ Status isEmpty(const SqList L)
 {
 	if(L.length==0)
 		return TRUE;
-	elsw
+	else
 		return FALSE;
 }
 
@@ -73,7 +73,7 @@ Status FineElem(const SqList L,ElemType e)
 	int i;
 	for(i=0;i<L.length;i++)
 	{
-		if(!compare(L.elem[i]),e)
+		if(!compare(L.elem[i],e))
 		{
 			return i+1;
 		}
@@ -121,9 +121,81 @@ Status NextElem(const SqList L,ElemType cur_e,ElemType *next_e)
 Status InsertElem(SqList *L, int i, ElemType e)
 {
 	ElemType *new;
-	if(i < 1 || i L->length + 1)
+	if(i < 1 || i > L->length + 1)
 		return ERROR;
 	if(L->length >= L->size)
 	{
-		new =
+		new = (ElemType*) realloc(L->elem,(L->size + INC_SIZE) * sizeof(ElemType));
+		if(!new)
+			return ERROR;
+		L->elem = new;
+		L->size += INC_SIZE;
+	}
+	ElemType *p = &L->elem[i-1];
+	ElemType *q = &L->elem[L->length - 1];
+	for(;q >= p;q--)
+		*(q + 1) = *q;
+	*p = e;
+	++L->length;
+	return OK;
+}
+
+Status DeleteElem(SqList *L, int i, ElemType *e)
+{
+	if(i < 1 || i > L->length)
+		return ERROR;
+	ElemType *p = &L->elem[i - 1];
+	*e = *p;
+	for(; p < &L->elem[L->length];p++)
+		*(p) = *(p + 1);
+	--L->length;
+	return OK;
+}
+
+Status visit(const SqList L, int i)
+{
+	printf("%d", L.elem[i]);
+}
+
+Status TraverseList(const SqList L)
+{
+	int i;
+	for(i = 0;i < L.length; i++)
+		visit(L,i);
+	return OK;
+}
+
+Status DestoryList(SqList *L)
+{
+	free(L->elem);
+	L->length = 0;
+	L->size = 0;
+	return OK;
+}
+
+int main()
+{
+	SqList L;
+	if(InitList(&L))
+	{
+		ElemType e;
+		printf("INIT_SECCESS\n");
+		int i;
+		for(i = 0; i < 10; i++)
+			InsertElem(&L, i + 1, i);
+		printf("LENGTH = %d\n", getLength(L));
+		if(GetElem(L, 1, &e))
+			printf("FIRST = %d\n", e);
+		else
+			printf("FIRST ERROR\n");
+		printf("Find 5 in %d\n", FineElem(L, 5));
+		PreElem(L, 6, &e);
+		printf("%d\n",e);
+		NextElem(L, 6, &e);
+		printf("%d\n",e);
+		DeleteElem(&L, 1, &e);
+		printf("DEL = %d\n", e);
+		TraverseList(L);
+		return 0;
+	}
 }
