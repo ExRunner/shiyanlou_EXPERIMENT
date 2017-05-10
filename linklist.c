@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#define TURE 1
+#define TRUE 1
 #define FALSE 0
 #define OK 1
 #define ERROR 0
@@ -52,7 +52,7 @@ Status isEmpty(LinkList L)
 	}
 	else
 	{
-		return TURE;
+		return TRUE;
 	}
 }
 
