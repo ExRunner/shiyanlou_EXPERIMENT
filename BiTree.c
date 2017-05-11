@@ -71,11 +71,56 @@ Status PostOrderTraverse(BiTree T, void (*visit)(TElemType))
 	}
 }
 
+void MakeMaxHeap(BiTree *T)
+{
+	TElemType p;
+	if(*T)
+	{
+		MakeMaxHeap(&(*T)->lchild);
+		MakeMaxHeap(&(*T)->rchild);
+		if((*T)->lchild && (*T)->lchild->data > (*T)->data)
+		{
+			p = (*T)->data;
+			(*T)->data = (*T)->lchild->data;
+			(*T)->lchild->data = p;
+		}
+		else if((*T)->rchild && (*T)->rchild->data > (*T)->data)
+		{
+			p = (*T)->data;
+			(*T)->data = (*T)->rchild->data;
+			(*T)->lchild->data = p;
+		}
+	}
+}
+
+void MakeMinHeap(BiTree *T)
+{
+	TElemType p;
+	if(*T)
+	{
+		MakeMinHeap(&(*T)->lchild);
+		MakeMinHeap(&(*T)->rchild);
+		if((*T)->lchild && (*T)->lchild->data < (*T)->data)
+		{
+			p = (*T)->data;
+			(*T)->data = (*T)->lchild->data;
+			(*T)->lchild->data = p;
+		}
+		else if((*T)->rchild && (*T)->rchild->data < (*T)->data)
+		{
+			p = (*T)->data;
+			(*T)->data = (*T)->rchild->data;
+			(*T)->lchild->data = p;
+		}
+	}
+}
+
 int main()
 {
 	BiTree T;
 	printf("Create_BINARY_TREE\n");
 	CreateBiTree(&T);
+	MakeMaxHeap(&T);
 	printf("PRE_ORDER:");
 	PreOrderTraverse(T, *visit);
 	printf("\nIN_ORDER:");
