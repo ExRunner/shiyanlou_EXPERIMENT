@@ -112,16 +112,16 @@ Status CreateGraph(ALGraph *G)
 		}
 		G->adjList[i].firstEdge = NULL;
 	}
-	print("edge");
+	printf("edge");
 	for(k = 0; k < G->edgeNum; k++)
 	{
 		scanf("%d", &i);
 		scanf("%d", &j);
-		e = (EdgeLink) malloc(sizeof(EdgeNode);
+		e = (EdgeLink) malloc(sizeof(EdgeNode));
 		e->adjvex = j;
 		e->next = G->adjList[i].firstEdge;
 		G->adjList[i].firstEdge = e;
-		e = (EdgeLink) malloc(sizeof(EdgeNode);
+		e = (EdgeLink) malloc(sizeof(EdgeNode));
 		e->adjvex = i;
 		e->next = G->adjList[j].firstEdge;
 		G->adjList[j].firstEdge = e;
@@ -174,6 +174,41 @@ Status BFSTraverse(ALGraph G)
 	{
 		visited[i] = FALSE;
 	}
-	for(i = 0; i < MAX_NUM; i++)
+	for(i = 0; i < G.vexNum; i++)
 	{
+		if(!visited[i])
+		{
+			visited[i] = TRUE;
+			printf("%c ", G.adjList[i].data);
+			EnQueue(&Q, i);
+			while(!isEmpty(Q))
+			{
+				DeQueue(&Q, &i);
+				p = G.adjList[i].firstEdge;
+				while(p)
+				{
+					if(!visited[p->adjvex])
+					{
+						visited[p->adjvex] = TRUE;
+						printf("%c ", G.adjList[p->adjvex].data);
+						EnQueue(&Q, p->adjvex);
+					}
+					p = p->next;
+				}
+			}
+		}
+	}
+	return OK;
+}
+
+int main()
+{
+	ALGraph G;
+	CreateGraph(&G);
+	printf("DFS:");
+	DFSTraverse(G);
+	printf("\nBFS:");
+	BFSTraverse(G);
+	printf("\n");
+}
 
