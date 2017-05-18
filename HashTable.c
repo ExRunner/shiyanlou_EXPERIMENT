@@ -90,6 +90,7 @@ int InsertHash(HashTable *H, int key,int prime)
 	flag = SearchHash(*H, key, prime, &p);
 	if(flag == EXIST)
 	{
+		printf("exist");
 		return EXIST;
 	}
 	else if(flag == EMPTY)
@@ -104,11 +105,25 @@ int InsertHash(HashTable *H, int key,int prime)
 
 int main(void)
 {
-	int prime,n;
+	int prime, n, i, key;
+	HashTable H;
 	printf("Enter N:");
 	scanf("%d", &n);
+	InitHash(&H, n);
 	prime = GetMaxPrime(n);
 	printf("Max Prime is %d\n", prime);
+	for (i = 0; i < n / 2; i++)
+	{
+		scanf("%d", &key);
+		InsertHash(&H, key, prime);
+	}
+	for(i = 0; i < n; i++)
+	{
+		if(H->data[i] != NULLKEY)
+		printf("%d ", H->data[i]);
+		else
+			printf("Empty ");
+	}
 	return 0;
 }
 
