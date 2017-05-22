@@ -4,11 +4,45 @@
 void Merge(int *source, int *target, int i, int m, int n)
 {
 	int j, k;
-	for(j = m + 1, k = 1; i <= m && j <= n; k++)
+	for(j = m + 1, k = i; i <= m && j <= n; k++)
 	{
 		if(source[i] <= source[j])
 		{
-			target
+			target[k] = source[i++];
+		}
+		else
+		{
+			target[k] = source[j++];
+		}
+	}
+
+	while(i <= m)
+	{
+		target[k++] = source[i++];
+	}
+	while(j <= n)
+	{
+		target[k++] = source[j++];
+	}
+}
+
+
+void MergeSort(int *source, int *target, int s, int t)
+{
+	int m, *temp;
+	if(s == t)
+	{
+		target[s] = source[t];
+	}
+	else
+	{
+		temp = (int*) malloc(sizeof(int) * (t - s + 1));
+		m = (s + t) / 2;
+		MergeSort(source, temp, s, m);
+		MergeSort(source, temp, m + 1, t);
+		Merge(temp, target, s, m, t);
+	}
+}
 
 
 int main()
@@ -23,7 +57,7 @@ int main()
 	{
 		scanf("%d", &array[i]);
 	}
-	//ShellSort(array, n);
+	MergeSort(array, array, 0, n - 1);
 	for(i = 0; i < n; i++)
 	{
 		printf("%d ", array[i]);
