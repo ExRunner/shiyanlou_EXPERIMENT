@@ -9,12 +9,36 @@ Star::Star(GLfloat radius, GLfloat distance, GLfloat speed, GLfloat selfspeed, S
 
 void Star::drawStar()
 {
-	//todo:
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_BLEND);
+
+	int n = 1440;
+	glPushMatrix();
+	{
+		if(parentStar != 0 && parentStar->distance > 0)
+		{
+			glRotatef(parentStar->alpha, 0, 0 ,1);
+			glTranslatef(parentStar->distance, 0.0, 0.0);
+		}
+		glBegin(GL_LINES);
+		for(int i = 0; i < n; ++i)
+		{
+			glVertex2f(distance * cos(2 * PI * i / n), distance * sin(2 * PI * i / n));
+		}
+		glEnd();
+		glRotatef(alpha, 0, 0, 1);
+		glTranslatef(distance, 0.0, 0.0);
+		glRotatef(alphaSelf, 0, 0, 1);
+		glColor3f(rgbaColor[0], rgbaColor[1], rgbaColor[2]);
+		glutSolidTeapot(radius, 40, 32);
+	}
+	glPopMatrix();
 }
 
 void Star::update(long timeSpan)
 {
-	//todo:
+	alpha += timeSpan * speed;
+	alphaSelf = selfspeed;	
 }
 
 Planet::Planet(GLfloat radius, GLfloat distance, GLfloat speed, GLfloat selfspeed, Star* parent, GLfloat rgbColor[3]):Star(radius, distance, speed, selfspeed, parent)
@@ -24,7 +48,16 @@ Planet::Planet(GLfloat radius, GLfloat distance, GLfloat speed, GLfloat selfspee
 
 void Planet::drawPlanet()
 {
-	//todo:
+	GLfloat mat_ambient[] = {0.0f, 0.0f, 0.5f, 1.0f};
+	GLfloat mat_diffuse[] = {0.0f, 0.0f, 0.5f, 1.0f};
+	GLfloat mat_specular[] = {0.0f, 0.0f, 1.0f, 1.0f};
+	GLfloat mat_emission[] = {rgbaColor[0], rgbaColor[1], rgbaColor[2], rgbaColor[3]};
+	GLfloat mat_shinines = 90.0f;
+	glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+	glMaterialfv(GL_FRONT, GL_EMISSION, mat_emission);
+	glMaterialf(GL_FRONT, GL_SHININESS, mat_shinines);
 }
 
 
@@ -35,7 +68,14 @@ LightPlanet::LightPlanet(GLfloat radius, GLfloat distance, GLfloat speed, GLfloa
 
 void LightPlanet::drawLight()
 {
-	//todo:
+	GLfloat light_position[] = {0.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat light_ambient[] = {0.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat light_diffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat light_specular[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 }
 
 

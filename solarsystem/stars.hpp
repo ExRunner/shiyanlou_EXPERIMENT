@@ -24,7 +24,7 @@ class Star
 		virtual void update(long timeSpan);
 
 	protected:
-		Float alphaSelf, alpha;
+		GLfloat alphaSelf, alpha;
 };
 
 class Planet : public Star
