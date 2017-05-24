@@ -1,10 +1,23 @@
 #include "stars.hpp"
-
+#include<cmath>
 #define PI 3.1415926535
 
 Star::Star(GLfloat radius, GLfloat distance, GLfloat speed, GLfloat selfspeed, Star* parent)
 {
-	//todo:
+	this->radius = radius;
+	this->selfspeed = selfspeed;
+	this->alphaSelf = this->alpha = 0;
+	this->distance = distance;
+	
+	for(int i = 0; i < 4; i++)
+		this->rgbaColor[i] = 1.0f;
+	
+	this->parentStar = parent;
+	
+	if(speed > 0)
+		this->speed = 360.0f / speed;
+	else
+		this->speed = 0.0f;
 }
 
 void Star::drawStar()
@@ -30,7 +43,7 @@ void Star::drawStar()
 		glTranslatef(distance, 0.0, 0.0);
 		glRotatef(alphaSelf, 0, 0, 1);
 		glColor3f(rgbaColor[0], rgbaColor[1], rgbaColor[2]);
-		glutSolidTeapot(radius, 40, 32);
+		glutSolidSphere(radius, 40, 32);
 	}
 	glPopMatrix();
 }
@@ -43,7 +56,10 @@ void Star::update(long timeSpan)
 
 Planet::Planet(GLfloat radius, GLfloat distance, GLfloat speed, GLfloat selfspeed, Star* parent, GLfloat rgbColor[3]):Star(radius, distance, speed, selfspeed, parent)
 {
-	//todo:
+	rgbaColor[0] = rgbColor[0];
+	rgbaColor[1] = rgbColor[1];
+	rgbaColor[2] = rgbColor[2];
+	rgbaColor[3] = 1.0f;
 }
 
 void Planet::drawPlanet()
@@ -63,7 +79,7 @@ void Planet::drawPlanet()
 
 LightPlanet::LightPlanet(GLfloat radius, GLfloat distance, GLfloat speed, GLfloat selfspeed, Star* parent, GLfloat rgbColor[3]):Planet(radius, distance, speed, selfspeed, parent,rgbColor)
 {
-	//todo:
+	;
 }
 
 void LightPlanet::drawLight()
